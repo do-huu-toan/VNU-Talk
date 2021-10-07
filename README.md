@@ -1,1 +1,1 @@
-# VNU Talk - Ứng dụng phát triển di động
+# VNU Talk - Phát triền ứng dụng di động
