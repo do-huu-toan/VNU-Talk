@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">VNUTalkApp</string>
+    <string name="app_name">VNU Talk App</string>
+    <string name="action_message">Tin nhắn</string>
+    <string name="action_book">Danh bạ</string>
 </resources>
