@@ -1,10 +1,13 @@
 package com.example.vnutalkapp.src.apdater;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +20,11 @@ import java.util.List;
 public class MessageApdater extends RecyclerView.Adapter<MessageApdater.MessageViewHolder>{
 
     private List<MessageItem> mListMessage;
+    private Context mContext;
+    public MessageApdater(Context context, List<MessageItem> mListMessage) {
+        this.mListMessage = mListMessage;
+        this.mContext = context;
+    }
 
     public void setData(List<MessageItem> data){
         mListMessage = data;
@@ -37,6 +45,13 @@ public class MessageApdater extends RecyclerView.Adapter<MessageApdater.MessageV
             return;
         holder.user.setText(message.getUser());
         holder.message.setText(message.getMessage());
+        holder.layoutItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, message.getUser(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     @Override
@@ -50,11 +65,13 @@ public class MessageApdater extends RecyclerView.Adapter<MessageApdater.MessageV
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         private TextView user;
         private TextView message;
+        private RelativeLayout layoutItem;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             user = itemView.findViewById(R.id.tv_item_user);
             message = itemView.findViewById(R.id.tv_item_user_message);
+            layoutItem = itemView.findViewById(R.id.layout_item);
         }
     }
 }

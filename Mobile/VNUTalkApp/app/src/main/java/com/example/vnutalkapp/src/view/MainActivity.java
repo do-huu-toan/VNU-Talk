@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,15 +19,14 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rcvMessage;
     private MessageApdater msgApdater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         rcvMessage = findViewById(R.id.rcv_listMessage);
-        msgApdater = new MessageApdater();
-        msgApdater.setData(getListData());
-
+        msgApdater = new MessageApdater(this, getListData());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvMessage.setLayoutManager(linearLayoutManager);
         rcvMessage.setAdapter(msgApdater);
