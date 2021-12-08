@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vnutalkapp.R;
 import com.example.vnutalkapp.src.model.MessageItem;
+import com.example.vnutalkapp.src.view.fragment.MessageFragment;
 
 import java.util.List;
 
@@ -49,7 +50,6 @@ public class MessageApdater extends RecyclerView.Adapter<MessageApdater.MessageV
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, message.getUser(), Toast.LENGTH_SHORT).show();
-
             }
         });
     }
