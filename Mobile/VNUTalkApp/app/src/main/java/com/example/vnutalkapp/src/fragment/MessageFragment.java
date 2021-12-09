@@ -1,4 +1,4 @@
-package com.example.vnutalkapp.src.view.fragment;
+package com.example.vnutalkapp.src.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,7 +39,7 @@ public class MessageFragment extends Fragment {
 
     private List<MessageItem> getListData(){
         List<MessageItem> list = new ArrayList<>();
-        list.add(new MessageItem("Đỗ Hữu Toàn", "Hello"));
+        list.add(new MessageItem("Đỗ Hữu Toàn", "OK, Xin chào lại"));
         list.add(new MessageItem("Test 1", "Hello"));
         list.add(new MessageItem("Test 2", "Tin nhắn nháp"));
         list.add(new MessageItem("Test 3", "Tin nhắn test"));

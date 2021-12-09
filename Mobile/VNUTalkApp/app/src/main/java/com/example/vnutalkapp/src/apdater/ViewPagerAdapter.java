@@ -1,14 +1,13 @@
-package com.example.vnutalkapp.src.view;
+package com.example.vnutalkapp.src.apdater;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.vnutalkapp.src.view.fragment.MessageFragment;
-import com.example.vnutalkapp.src.view.fragment.PhoneBookFragment;
+import com.example.vnutalkapp.src.fragment.MessageFragment;
+import com.example.vnutalkapp.src.fragment.PhoneBookFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {

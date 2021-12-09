@@ -1,4 +1,4 @@
-package com.example.vnutalkapp.src.view.fragment;
+package com.example.vnutalkapp.src.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
