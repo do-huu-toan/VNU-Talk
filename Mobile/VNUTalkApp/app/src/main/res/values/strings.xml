@@ -2,4 +2,6 @@
     <string name="app_name">VNU Talk App</string>
     <string name="action_message">Tin nhắn</string>
     <string name="action_book">Danh bạ</string>
+    <string name="url_socket">http://10.0.2.2:3000</string>
+    <string name="url_api">http://10.0.2.2:3000/api/v1/</string>
 </resources>

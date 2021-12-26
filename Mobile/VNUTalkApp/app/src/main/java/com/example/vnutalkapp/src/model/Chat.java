@@ -2,13 +2,13 @@ package com.example.vnutalkapp.src.model;
 
 public class Chat {
     private String message;
-    private String sender;
-    private String receiver;
+    private String seederId;
+    private String receiverId;
 
     public Chat(String message, String sender, String receiver) {
         this.message = message;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.seederId = sender;
+        this.receiverId = receiver;
     }
 
     public String getMessage() {
@@ -20,18 +20,18 @@ public class Chat {
     }
 
     public String getSender() {
-        return sender;
+        return seederId;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setSender(String seederId) {
+        this.seederId = seederId;
     }
 
     public String getReceiver() {
-        return receiver;
+        return receiverId;
     }
 
     public void setReceiver(String receiver) {
-        this.receiver = receiver;
+        this.receiverId = receiver;
     }
 }

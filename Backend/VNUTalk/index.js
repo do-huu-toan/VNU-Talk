@@ -15,6 +15,15 @@ const messageRoute = require('./routes/message.route');
 // Config Database:
 const db = require('./models/database.js');
 const generateData = require('./models/generateSampleData');
+//init socketio
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "*"
+    }
+});
+
 
 db.sync({ force: false });
 
@@ -76,7 +85,47 @@ app.post("/api/v1/auth/facebook", passport.authenticate('facebook-token', { sess
     return res.send(req.user);
 })
 
+// SocketIO:
+var listSocket = [];
+io.on("connection", (socket) => {
+    // Lấy userId:
+    let _userId = socket.handshake.query.userId;
+    /* Tìm xem có userId này chưa */
+    let isAvailable = false;
+    for (let i = 0; i < listSocket.length; i++) {
+        if (_userId == listSocket[i].userId) {
+            listSocket[i].socketId = socket.id;
+            isAvailable = true;
+        }
+    }
+    if (isAvailable == false) {
+        listSocket.push({
+            userId: _userId,
+            socketId: socket.id
+        });
+    }
 
-app.listen(port, () => {
+    /* ---------------------------*/
+    console.log(listSocket);
+    // Nếu gửi tin nhắn
+    socket.on("sendMessage", data => {
+        let receiverId = data.receiverId;
+        let receiverItem = listSocket.find(element => element.userId == receiverId)
+        //console.log(receiverItem);
+        io.to(receiverItem.socketId).emit('message',
+            {
+                message: data.message,
+                seederId: socket.handshake.query.userId,
+            });
+    })
+    socket.on("disconnect", () => {
+        console.log(socket.id + " disconnect");
+        listSocket = listSocket.filter(element => element.socketId != socket.id);
+        //console.log(listSocket);
+
+    })
+})
+
+server.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 })

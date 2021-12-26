@@ -33,5 +33,7 @@ public interface ApiService {
     @POST("account/login")
     Call<User> login(@Body User user);
     @GET("message?")
-    Call<List<Chat>> getListMessage(@Query("seederId") String seederId, @Query("seederId") String receiverId);
+    Call<List<Chat>> getListMessage(@Query("seederId") String seederId, @Query("receiverId") String receiverId);
+    @POST("message")
+    Call<Chat> createMesssage(@Body Chat chat);
 }
