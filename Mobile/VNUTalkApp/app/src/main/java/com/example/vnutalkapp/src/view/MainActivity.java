@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.vnutalkapp.R;
 import com.example.vnutalkapp.src.apdater.MessageApdater;
@@ -15,10 +16,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView rcvMessage;
-    private MessageApdater msgApdater;
+    private TextView tv_userName;
     private ViewPager2 mViewPager;
+    private Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
                 return handleBottomNavSelected(item);
             }
         });
+        bundle = getIntent().getExtras();
+        tv_userName = findViewById(R.id.tv_user_name);
+        tv_userName.setText(bundle.getString("fullName"));
         // View Pager:
         mViewPager = findViewById(R.id.view_pager);
         setUpViewPager();
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(){
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle(), bundle);
         mViewPager.setAdapter(viewPagerAdapter);
     }
     private boolean handleBottomNavSelected(MenuItem item){

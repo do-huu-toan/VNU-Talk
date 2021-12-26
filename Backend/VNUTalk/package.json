@@ -5,17 +5,23 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "generate": "node ./models/Init.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mariadb": "^2.5.4",
+    "mysql2": "^2.3.0",
     "passport": "^0.5.0",
     "passport-facebook": "^3.0.0",
-    "passport-facebook-token": "^4.0.0"
+    "passport-facebook-token": "^4.0.0",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

@@ -12,11 +12,16 @@ import android.widget.EditText;
 
 import com.example.vnutalkapp.R;
 import com.example.vnutalkapp.src.apdater.ChatApdater;
+import com.example.vnutalkapp.src.api.ApiService;
 import com.example.vnutalkapp.src.model.Chat;
 import com.example.vnutalkapp.src.model.MessageItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
     private EditText edtMessage;
@@ -61,11 +66,27 @@ public class ChatActivity extends AppCompatActivity {
     }
     private List<Chat> getListData(){
         List<Chat> list = new ArrayList<>();
+        /*
         list.add(new Chat("Xin chào", "Trang", "Toàn"));
         list.add(new Chat("OK, Xin chào lại", "Toàn", "Trang"));
         list.add(new Chat("Xin chào", "Trang", "Toàn"));
         list.add(new Chat("Xin chào", "Trang", "Toàn"));
         list.add(new Chat("OK, Xin chào lại", "Toàn", "Trang"));
+        */
+        // Call API tìm các đoạn chat
+        String seederId = getIntent().getExtras().getString("userId");
+        String receiverId = getIntent().getExtras().getString("receiverId");
+        ApiService.apiService.getListMessage(seederId, receiverId).enqueue(new Callback<List<Chat>>() {
+            @Override
+            public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Chat>> call, Throwable t) {
+
+            }
+        });
         return  list;
     }
 }
