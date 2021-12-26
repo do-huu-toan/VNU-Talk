@@ -11,12 +11,14 @@ const getBySeederAndReceiver = async (req, res) => {
         const listMessage = await Message.findAll({
             where: {
                 [Op.or]: [
-                    { seederId: _seederId },
-                    { seederId: _receiverId }
-                ],
-                [Op.or]: [
-                    { receiverId: _receiverId },
-                    { receiverId: _seederId }
+                    {
+                        seederId: _seederId,
+                        receiverId: _receiverId
+                    },
+                    {
+                        seederId: _receiverId,
+                        receiverId: _seederId
+                    }
                 ],
             },
             order: [

@@ -17,7 +17,10 @@ import com.example.vnutalkapp.src.apdater.ChatApdater;
 import com.example.vnutalkapp.src.api.ApiService;
 import com.example.vnutalkapp.src.model.Chat;
 import com.example.vnutalkapp.src.model.MessageItem;
+import com.example.vnutalkapp.src.model.MessageSend;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -71,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    private void sendChat(){
+    private void sendChat() {
         String strMessage = edtMessage.getText().toString().trim();
         if(TextUtils.isEmpty(strMessage)){
             return;
@@ -94,6 +97,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         // SOCKET IO Message
+        MessageSend messageSend = new MessageSend(strMessage, bundle.getString("receiverId"));
+        Gson gson = new Gson();
+        try{
+            JSONObject obj = new JSONObject(gson.toJson(messageSend));
+            mSocket.emit("sendMessage", obj);
+        }
+        catch (Exception e){}
     }
     private List<Chat> getListData(){
         List<Chat> list = new ArrayList<>();

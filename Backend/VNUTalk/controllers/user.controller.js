@@ -8,6 +8,20 @@ const getAll = async (req, res) => {
         return res.status(400).json(error);
     }
 }
+const create = async (req, res) => {
+    try{
+        const newUser = new User({
+            fullname: req.body.fullname,
+            password: req.body.password,
+            username: req.body.username
+        })
+        return res.status(201).json(await newUser.save());
+    }
+    catch(error){
+        return res.status(500).json(error)
+    }
+}
 module.exports = {
-    getAll
+    getAll,
+    create
 }
