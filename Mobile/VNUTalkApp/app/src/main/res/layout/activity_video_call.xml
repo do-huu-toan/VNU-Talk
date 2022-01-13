@@ -9,13 +9,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <EditText
             android:layout_width="200dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:id="@+id/edt_urlCallVideo"
+            />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gọi"
+            android:id="@+id/btn_callVideo"
             />
 
     </LinearLayout>
@@ -24,7 +27,9 @@
         android:layout_height="match_parent">
         <WebView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:id="@+id/wv_videoCall"
+            />
     </LinearLayout>
 
 
