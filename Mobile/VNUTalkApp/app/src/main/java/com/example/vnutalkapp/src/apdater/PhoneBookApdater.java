@@ -55,6 +55,7 @@ public class PhoneBookApdater extends RecyclerView.Adapter<PhoneBookApdater.Phon
                 // Truyền Id vào bundle
                 Bundle bundle = mBundle;
                 bundle.putString("receiverId",item.getUserId());
+                bundle.putString("receiverUsername",item.getFullName());
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
             }

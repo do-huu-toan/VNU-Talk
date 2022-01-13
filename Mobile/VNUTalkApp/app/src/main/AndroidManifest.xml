@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.vnutalkapp">
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
-    
+    package="com.example.vnutalkapp" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.VNUTalkApp">
-        <activity android:name=".src.view.ChatActivity">
+        android:theme="@style/Theme.VNUTalkApp"
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".src.view.VideoCallActivity"
+            android:exported="false" >
 
         </activity>
-        <activity android:name=".src.view.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity
+            android:name=".src.view.ChatActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".src.view.LoginActivity"
+            android:theme="@style/Theme.VNUTalkApp.NoTittleBar" >
         </activity>
-        <activity android:name=".src.view.MainActivity">
-
-        </activity>
+        <activity
+            android:name=".src.view.MainActivity"
+            android:theme="@style/Theme.VNUTalkApp.NoTittleBar" />
     </application>
 
 </manifest>

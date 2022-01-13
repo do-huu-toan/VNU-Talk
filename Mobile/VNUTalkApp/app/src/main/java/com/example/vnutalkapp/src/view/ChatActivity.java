@@ -47,6 +47,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        //
+        setTitle(getIntent().getExtras().getString("receiverUsername"));
         // SocketIO Init:
         initSocketIO();
         mSocket.connect();
@@ -168,12 +170,19 @@ public class ChatActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject)args[0];
                     String message = data.optString("message");
                     String seederId = data.optString("seederId");
-                    mListChat.add(new Chat(message, seederId, getIntent().getExtras().getString("userId")));
-                    chatApdater.notifyDataSetChanged();
-                    rcvChat.scrollToPosition(mListChat.size() - 1);
+                    if(seederId.equals(bundle.getString("receiverId"))) {
+                        mListChat.add(new Chat(message, seederId, getIntent().getExtras().getString("userId")));
+                        chatApdater.notifyDataSetChanged();
+                        rcvChat.scrollToPosition(mListChat.size() - 1);
+                    }
                 }
             });
         }
     };
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSocket.disconnect();
+        finish();
+    }
 }
