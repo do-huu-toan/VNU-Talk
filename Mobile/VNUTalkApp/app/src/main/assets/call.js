@@ -9,7 +9,12 @@ remoteVideo.onplaying = () => { remoteVideo.style.opacity = 1 }
 
 let peer
 function init(userId) {
-    peer = new Peer(userId)
+    peer = new Peer(userId,
+    {
+          host: 'http://dht.ddns.net',
+          port: 3000,
+          path: '/peerjs/call'
+     })
 
     listen()
 }

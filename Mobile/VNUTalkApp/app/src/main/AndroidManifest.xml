@@ -29,6 +29,7 @@
             android:name=".src.view.LoginActivity"
             android:theme="@style/Theme.VNUTalkApp.NoTittleBar" >
 
+
         </activity>
         <activity
             android:name=".src.view.MainActivity"

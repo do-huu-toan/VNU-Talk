@@ -24,6 +24,11 @@ const io = require('socket.io')(server, {
     }
 });
 
+const { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server, {
+    path: '/call'
+  });
+
 
 db.sync({ force: false });
 
@@ -35,6 +40,8 @@ app.use(passport.initialize());
 app.use(express.urlencoded({
     limit: '50mb'
 }));
+
+app.use('/peerjs', peerServer);
 
 
 passport.use(new FacebookTokenStrategy({
