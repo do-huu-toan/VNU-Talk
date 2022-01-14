@@ -11,7 +11,7 @@ let peer
 function init(userId) {
     peer = new Peer(userId,
     {
-          host: 'http://dht.ddns.net',
+          host: '192.168.0.100',
           port: 3000,
           path: '/peerjs/call'
      })

@@ -14,36 +14,69 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.vnutalkapp.R;
+import com.example.vnutalkapp.src.model.MessageSend;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.util.UUID;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class VideoCallActivity extends AppCompatActivity {
     boolean isPeerConnected = false;
     WebView mWebView;
     Button btnCallVideo;
-    EditText edtUrlVideoCall;
+    private Socket mSocket;
+    private Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_call);
-
+        bundle = getIntent().getExtras();
         mWebView = findViewById(R.id.wv_videoCall);
         btnCallVideo = findViewById(R.id.btn_callVideo);
-        edtUrlVideoCall = findViewById(R.id.edt_urlCallVideo);
 
+        initSocketIO();
+        mSocket.connect();
         setupWebView();
+
+
         btnCallVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleBtnCallVideoClick();
+                MessageSend messageSend = new MessageSend("", bundle.getString("receiverId"));
+                Gson gson = new Gson();
+                try{
+                    Toast.makeText(VideoCallActivity.this, "Trả lời", Toast.LENGTH_SHORT).show();
+                    JSONObject obj = new JSONObject(gson.toJson(messageSend));
+                    mSocket.emit("answercall", obj);
+                }
+                catch (Exception e){}
+                //handleBtnCallVideoClick(bundle.getString("receiverId"));
             }
         });
+
+
     }
 
-    private void handleBtnCallVideoClick() {
-        callJavascriptFunction("javascript:startCall(\"" + edtUrlVideoCall.getText().toString() + "\")");
+    private void initSocketIO(){
+        try {
+            Log.i("Bundle", String.valueOf(getIntent().getExtras()));
+            mSocket = IO.socket("http://192.168.0.100:3000?userId=" + bundle.getString("userId"));
+        }
+        catch (Exception e){
+            Log.e("Error SocketIO", e.getMessage());
+        }
+
+    }
+
+    private void handleBtnCallVideoClick(String receiverId) {
+        callJavascriptFunction("javascript:startCall(\"" + receiverId + "\")");
     }
 
     private void loadVideoCall() {
@@ -52,6 +85,23 @@ public class VideoCallActivity extends AppCompatActivity {
         mWebView.setWebViewClient(new WebViewClient(){
             public void onPageFinished(WebView view, String url) {
                 initializePeer();
+                if(bundle.getString("caller").equals("1")){
+                    Toast.makeText(VideoCallActivity.this, "Bắt đầu", Toast.LENGTH_SHORT).show();
+                    handleBtnCallVideoClick(bundle.getString("receiverId"));
+                }
+                /*
+                else if(bundle.getString("caller").equals("0")){
+                    MessageSend messageSend = new MessageSend("", bundle.getString("receiverId"));
+                    Gson gson = new Gson();
+                    try{
+                        Toast.makeText(VideoCallActivity.this, "Trả lời", Toast.LENGTH_SHORT).show();
+                        JSONObject obj = new JSONObject(gson.toJson(messageSend));
+                        mSocket.emit("answercall", obj);
+                    }
+                    catch (Exception e){}
+                }
+
+                 */
             }
         });
     }
@@ -81,9 +131,7 @@ public class VideoCallActivity extends AppCompatActivity {
         }
     }
     private void initializePeer() {
-        String uniqueId = getUniqueID();
-        callJavascriptFunction("javascript:init(\""+uniqueId+"\")");
-        edtUrlVideoCall.setText(uniqueId);
+        callJavascriptFunction("javascript:init(\""+ bundle.getString("userId")+"\")");
     }
     private String getUniqueID() {
         return UUID.randomUUID().toString();

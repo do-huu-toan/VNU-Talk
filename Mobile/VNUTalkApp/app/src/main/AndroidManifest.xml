@@ -17,10 +17,7 @@
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".src.view.VideoCallActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".src.view.ChatActivity"
@@ -28,8 +25,10 @@
         <activity
             android:name=".src.view.LoginActivity"
             android:theme="@style/Theme.VNUTalkApp.NoTittleBar" >
-
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".src.view.MainActivity"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 
 
 public class ChatActivity extends AppCompatActivity {
+    private Boolean call = false;
     private Socket mSocket;
     private EditText edtMessage;
     private Button btnSend;
@@ -43,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatApdater chatApdater;
     private List<Chat> mListChat;
     private Bundle bundle;
+    private Button btnCall;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +56,13 @@ public class ChatActivity extends AppCompatActivity {
         initSocketIO();
         mSocket.connect();
         mSocket.on("message", onNewMessage);
+        mSocket.on("isCall", onNewCall);
+        mSocket.on("answercall", onAnswerCall);
         //
         bundle = getIntent().getExtras();
         edtMessage = findViewById(R.id.edt_message);
         btnSend = findViewById(R.id.btn_send);
+        btnCall = findViewById(R.id.btn_call);
         rcvChat = findViewById(R.id.rcv_chat);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -73,9 +79,39 @@ public class ChatActivity extends AppCompatActivity {
                 sendChat();
             }
         });
+
+        btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCallClick();
+            }
+        });
     }
 
+    private void handleCallClick(){
+        call = false;
+        MessageSend messageSend = new MessageSend("", bundle.getString("receiverId"));
+        Gson gson = new Gson();
+        try {
+            JSONObject obj = new JSONObject(gson.toJson(messageSend));
+            mSocket.emit("call", obj);
+        }
+        catch (Exception e){
 
+        }
+    }
+    private void callActivity(String status){
+        String userId = bundle.getString("userId");
+        String receiverId = bundle.getString("receiverId");
+        Intent intent = new Intent(ChatActivity.this, VideoCallActivity.class);
+        // Tạo bundle:
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putString("receiverId", receiverId);
+        bundle.putString("caller", status);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
     private void sendChat() {
         String strMessage = edtMessage.getText().toString().trim();
         if(TextUtils.isEmpty(strMessage)){
@@ -153,7 +189,7 @@ public class ChatActivity extends AppCompatActivity {
     private void initSocketIO(){
         try {
             Log.i("Bundle", String.valueOf(getIntent().getExtras()));
-            mSocket = IO.socket("http://10.0.2.2:3000?userId=" + getIntent().getExtras().getString("userId"));
+            mSocket = IO.socket("http://192.168.0.100:3000?userId=" + getIntent().getExtras().getString("userId"));
             }
             catch (Exception e){
                 Log.e("Error SocketIO", e.getMessage());
@@ -179,6 +215,39 @@ public class ChatActivity extends AppCompatActivity {
             });
         }
     };
+
+    private Emitter.Listener onNewCall = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    String seederId = data.optString("seederId");
+                    Toast.makeText(ChatActivity.this, "Có cuộc gọi đến", Toast.LENGTH_SHORT).show();
+                    callActivity("0");
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onAnswerCall = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    String seederId = data.optString("seederId");
+                    Toast.makeText(ChatActivity.this, "Chấp nhận cuộc gọi", Toast.LENGTH_SHORT).show();
+                    if(seederId.equals(bundle.getString("receiverId"))){
+                        callActivity("1");
+                    }
+                }
+            });
+        }
+    };
+
     @Override
     public void onPause() {
         super.onPause();

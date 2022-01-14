@@ -129,6 +129,29 @@ io.on("connection", (socket) => {
 
 
     })
+    socket.on("call", data => {
+        let receiverId = data.receiverId;
+        let receiverItem = listSocket.find(element => element.userId == receiverId)
+        //console.log(data);
+        if (receiverItem) {
+            io.to(receiverItem.socketId).emit('isCall',
+                {
+                    seederId: socket.handshake.query.userId,
+                });
+        }
+    })
+    socket.on("answercall", data => {
+        console.log("Answer on: ");
+        let receiverId = data.receiverId;
+        let receiverItem = listSocket.find(element => element.userId == receiverId)
+        console.log(data);
+        if (receiverItem) {
+            io.to(receiverItem.socketId).emit('answercall',
+                {
+                    seederId: socket.handshake.query.userId,
+                });
+        }
+    })
     socket.on("disconnect", () => {
         console.log(socket.id + " disconnect");
         listSocket = listSocket.filter(element => element.socketId != socket.id);
